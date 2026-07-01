@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "deepseek",
-  "version": "0.1.0",
-  "identifier": "com.deepseek.desktop.community",
+  "version": "0.1.2",
+  "identifier": "com.bluewhale.desktop.community",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
