@@ -1,6 +1,6 @@
 # DeepSeek Desktop
 
-将 DeepSeek 封装为桌面应用，使用 Tauri 构建。
+> **声明：** 这不是官方应用，而是基于 [chat.deepseek.com](https://chat.deepseek.com) 封装的非官方桌面客户端，使用 Tauri 构建。
 
 ## 功能
 
