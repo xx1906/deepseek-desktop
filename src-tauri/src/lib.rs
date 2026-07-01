@@ -22,6 +22,12 @@ fn tray_labels() -> (&'static str, &'static str, &'static str, &'static str) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.show();
+                let _ = window.set_focus();
+            }
+        }))
         .setup(|app| {
             let (show_text, hide_text, quit_text, tooltip) = tray_labels();
 
