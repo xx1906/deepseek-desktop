@@ -93,13 +93,8 @@ pub fn run() {
             .title("DeepSeek")
             .inner_size(1200.0, 800.0)
             .min_inner_size(800.0, 600.0)
-            .initialization_script(
-                r#"(function(){var T="DeepSeek";try{Object.defineProperty(document,"title",{configurable:false,enumerable:true,get:function(){return T},set:function(){}})}catch(e){document.title=T}})();"#,
-            )
             .on_document_title_changed(|window, title| {
-                if title != "DeepSeek" {
-                    let _ = window.set_title("DeepSeek");
-                }
+                let _ = window.set_title(&title);
             })
             .build()?;
 
