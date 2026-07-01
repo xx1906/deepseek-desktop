@@ -1,11 +1,10 @@
 [package]
 name = "deepseek-desktop"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "DeepSeek desktop app built with Tauri"
+authors = ["DeepSeek Desktop Community"]
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+rust-version = "1.77"
 
 [lib]
 # The `_lib` suffix may seem redundant but it is necessary
