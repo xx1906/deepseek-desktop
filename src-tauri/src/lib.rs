@@ -5,17 +5,117 @@ use tauri::{
     Manager, WindowEvent,
 };
 
-fn is_chinese_locale() -> bool {
-    sys_locale::get_locale()
-        .map(|l| l.starts_with("zh"))
-        .unwrap_or(false)
+struct TrayLabels {
+    show: &'static str,
+    hide: &'static str,
+    quit: &'static str,
+    tooltip: &'static str,
 }
 
-fn tray_labels() -> (&'static str, &'static str, &'static str, &'static str) {
-    if is_chinese_locale() {
-        ("显示", "隐藏", "退出", "DeepSeek")
-    } else {
-        ("Show", "Hide", "Quit", "DeepSeek")
+fn tray_labels() -> TrayLabels {
+    match sys_locale::get_locale().as_deref() {
+        Some(l) if l.starts_with("zh") => TrayLabels {
+            show: "显示",
+            hide: "隐藏",
+            quit: "退出",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("ja") => TrayLabels {
+            show: "表示",
+            hide: "非表示",
+            quit: "終了",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("ko") => TrayLabels {
+            show: "표시",
+            hide: "숨기기",
+            quit: "종료",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("fr") => TrayLabels {
+            show: "Afficher",
+            hide: "Masquer",
+            quit: "Quitter",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("de") => TrayLabels {
+            show: "Anzeigen",
+            hide: "Ausblenden",
+            quit: "Beenden",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("es") => TrayLabels {
+            show: "Mostrar",
+            hide: "Ocultar",
+            quit: "Salir",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("pt") => TrayLabels {
+            show: "Mostrar",
+            hide: "Ocultar",
+            quit: "Sair",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("ru") => TrayLabels {
+            show: "Показать",
+            hide: "Скрыть",
+            quit: "Выйти",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("it") => TrayLabels {
+            show: "Mostra",
+            hide: "Nascondi",
+            quit: "Esci",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("nl") => TrayLabels {
+            show: "Tonen",
+            hide: "Verbergen",
+            quit: "Afsluiten",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("pl") => TrayLabels {
+            show: "Pokaż",
+            hide: "Ukryj",
+            quit: "Wyjdź",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("tr") => TrayLabels {
+            show: "Göster",
+            hide: "Gizle",
+            quit: "Çıkış",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("vi") => TrayLabels {
+            show: "Hiện",
+            hide: "Ẩn",
+            quit: "Thoát",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("th") => TrayLabels {
+            show: "แสดง",
+            hide: "ซ่อน",
+            quit: "ออก",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("ar") => TrayLabels {
+            show: "إظهار",
+            hide: "إخفاء",
+            quit: "خروج",
+            tooltip: "DeepSeek",
+        },
+        Some(l) if l.starts_with("hi") => TrayLabels {
+            show: "दिखाएँ",
+            hide: "छिपाएँ",
+            quit: "बाहर निकलें",
+            tooltip: "DeepSeek",
+        },
+        _ => TrayLabels {
+            show: "Show",
+            hide: "Hide",
+            quit: "Quit",
+            tooltip: "DeepSeek",
+        },
     }
 }
 
@@ -29,12 +129,12 @@ pub fn run() {
             }
         }))
         .setup(|app| {
-            let (show_text, hide_text, quit_text, tooltip) = tray_labels();
+            let labels = tray_labels();
 
             // Build tray menu
-            let show = MenuItemBuilder::with_id("show", show_text).build(app)?;
-            let hide = MenuItemBuilder::with_id("hide", hide_text).build(app)?;
-            let quit = MenuItemBuilder::with_id("quit", quit_text).build(app)?;
+            let show = MenuItemBuilder::with_id("show", labels.show).build(app)?;
+            let hide = MenuItemBuilder::with_id("hide", labels.hide).build(app)?;
+            let quit = MenuItemBuilder::with_id("quit", labels.quit).build(app)?;
 
             let menu = MenuBuilder::new(app)
                 .item(&show)
@@ -49,7 +149,7 @@ pub fn run() {
 
             TrayIconBuilder::new()
                 .icon(icon)
-                .tooltip(tooltip)
+                .tooltip(labels.tooltip)
                 .menu(&menu)
                 .on_menu_event(|app, event| {
                     match event.id.as_ref() {
