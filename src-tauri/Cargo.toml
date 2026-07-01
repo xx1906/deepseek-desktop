@@ -2,7 +2,6 @@
 name = "deepseek-desktop"
 version = "0.1.0"
 description = "DeepSeek desktop app built with Tauri"
-authors = ["DeepSeek Desktop Community"]
 edition = "2021"
 rust-version = "1.77"
 
